@@ -1,0 +1,54 @@
+* {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 100%;
+}
+
+body {
+	font: 300 1rem/1rem 'Open Sans', sans-serif;
+}
+
+h1 {
+	font: 600 1.6rem/2rem 'Open Sans', sans-serif;
+}
+
+h2 {
+	font: 400 1.4rem/2rem 'Open Sans', sans-serif;
+}
+
+li {
+	list-style: none;
+	padd
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th,
+td {
+	padding: 0.3rem;
+	border: 1px solid #ccc;
+}
+
+label {
+	display: inline-block;
+	width: 150px;
+	font: 600 1rem/2rem 'Open Sans', sans-serif;
+}
+
+input {
+	font: 300 1.2rem 'Open Sans', sans-serif;
+}
+
+.container {
+	width: 90%;
+	margin: auto;
+	padding: 1rem 0;
+}
