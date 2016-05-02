@@ -20,14 +20,17 @@ def json():
 @app.route('/categories/new', methods=['GET', 'POST'])
 def newCategory():
     form = CategoryForm(request.form)
-    if request.method == 'POST' and form.validate():
-        newCategory = Category(name=form.name.data)
-        session.add(newCategory)
-        session.commit()
-        flash("New category created!")
-        return redirect(url_for('showCategories'))
+    if request.method == 'POST':
+        if form.validate():
+            newCategory = Category(name=form.name.data)
+            session.add(newCategory)
+            session.commit()
+            flash("New category created!")
+            return redirect(url_for('showCategories'))
+        else:
+            return render_template('new_category.html', form=form)
     else:
-        return render_template('new_category.html', form=form)
+        return render_template('new_category.html', form=form, new=True)
 
 
 # show categories
@@ -40,30 +43,29 @@ def showCategories():
 # edit category
 @app.route('/categories/<int:category_id>/edit', methods=['GET', 'POST'])
 def editCategory(category_id):
-    category = session.query(Category).filter_by(id = category_id).one()
+    cat = session.query(Category).filter_by(id = category_id).one()
     form = CategoryForm(request.form)
     if request.method == 'POST' and form.validate():
-        category.name = request.form['name']
-        session.add(category)
+        cat.name = request.form['name']
+        session.add(cat)
         session.commit()
         flash("Category updated!")
         return redirect(url_for('showCategories'))
     else:
-        return render_template('edit_category.html', category=category, form=form)
+        return render_template('edit_category.html', cat=cat, form=form)
 
 
 # delete category
 @app.route('/categories/<int:category_id>/delete', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    category = session.query(Category).filter_by(id = category_id).one()
+    cat = session.query(Category).filter_by(id = category_id).one()
     if request.method == 'POST':
-        session.delete(category)
+        session.delete(cat)
         session.commit()
         flash("Category deleted!")
         return redirect(url_for('showCategories'))
     else:
-        category = session.query(Category).filter_by(id = category_id).one()
-        return render_template('delete_category.html', category=category)
+        return render_template('delete_category.html', cat=cat)
 
 
 # new ticket

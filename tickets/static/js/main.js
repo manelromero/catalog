@@ -1,8 +1,15 @@
 $(document).ready(function() {
-	$('.category').mouseover(function() {
+
+	$('.row').mouseover(function() {
 		$(this).css('background-color', '#eee');
 	});
-	$('.category').mouseleave(function() {
+
+	$('.row').mouseleave(function() {
 		$(this).css('background-color', '#fff');
 	});
+
+	$('.flash').click(function() {
+		$(this).css('display', 'none');
+	});
+
 });

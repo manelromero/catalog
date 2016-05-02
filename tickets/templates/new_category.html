@@ -1,7 +1,27 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Categories</h1>
-    <h2>Create a new category</h2>
-    {% include "form_category.html" %}
+
+<h1>Categories</h1>
+<h2>Create a new category</h2>
+
+<div class="wrapper-categories">
+
+	<form action="{{ url_for('newCategory') }}" method="POST">
+		<ul>
+			<li>{{ form.name.label }} {{ form.name(size=25) }}</li>
+
+			{% if form.name.errors %}
+				{% for error in form.name.errors %}
+					<span class="error">{{ error }}</span>
+				{% endfor %}
+			{% endif %}
+
+		</ul>
+		<input type="submit" value="Send">
+	</form>
+
+    <a href="{{ url_for('showCategories') }}"><button>Back</button></a>
+
+</div>
 
 {% endblock %}

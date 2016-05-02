@@ -1,12 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
 
-    <h1>Categories</h1>
-    <h2>Delete a category</h2>
+<h1>Categories</h1>
+<h2>Delete a category</h2>
 
-    {% with category=category %}
-    	{% include "form_delete_category.html" %}
-    	{% block form %}{% endblock %}
-	{% endwith %}
+<form action="{{ url_for('deleteCategory', category_id=cat.id) }}" method="POST">
+	<ul>
+		<li>Are you sure you want to delete category <span class="orange">{{ cat.name }}</span>?</li>
+	</ul>
+	<input type="submit" value="Yes">
+</form>
+
+<a href="{{ url_for('showCategories') }}"><button>No</button></a>
 
 {% endblock %}

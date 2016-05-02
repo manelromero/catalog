@@ -102,12 +102,13 @@ input[type=submit]:focus {
 	max-width: 500px;
 }
 
-.table-header .row {
+.table-header .header-row {
 	background-color: #333;
 	color: #fff;
 }
 
-.row {
+.row,
+.header-row {
 	width: 100%;
 	display: flex;
 	align-items: center;
@@ -148,6 +149,12 @@ input[type=submit]:focus {
 	color: #ff6200;
 }
 
+.error {
+	color: #ff0000;
+	position: relative;
+	top: -1rem;
+}
+
 .icon {
 	position: relative;
 	top: 0.3rem;
@@ -170,6 +177,19 @@ input[type=submit]:focus {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 	border-radius: 0.5rem;
 }
+
+.flash::after {
+	position: relative;
+	float: right;
+	color: #000;
+	opacity: 0;
+	content: 'Close';
+}
+
+.flash:hover::after {
+	opacity: 1;
+}
+
 
 /* Link */
 .underline,
