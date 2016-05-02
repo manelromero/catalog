@@ -10,6 +10,12 @@ def home():
     return render_template('home.html')
 
 
+# 404
+@app.errorhandler(404)
+def pageNotFound(e):
+    return render_template('404.html')
+
+
 # JSON
 @app.route('/JSON')
 def json():
