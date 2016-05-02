@@ -2,22 +2,45 @@
 {% block content %}
     <h1>Categories</h1>
 
-    {% if categories %}
-    <table>
-    	<thead>
-    		<tr>
-	    		<th>id</th>
-	    		<th>Name</th>
-	    	</tr>
-    	</thead>
-    	<tbody>
-	    	{% for category in categories %}
-	    	<tr class="category">
-	    		<td>{{ category.id }}</td>
-	    		<td>{{ category.name }}</td>
-	    	</tr>
-	    	{% endfor %}
-    	</tbody>
-    </table>
-    {% endif %}
+    <div class="wrapper-categories">
+        <!-- get flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <p class="flash">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if categories %}
+        <div class="table-header">
+            <div class="row">
+                <div class="cell w320">Name</div>
+                <div class="cell w80 center">Edit</div>
+                <div class="cell w80 center">Delete</div>
+            </div>
+        </div>
+
+        <div class="table">
+            {% for category in categories %}
+            <div class="row">
+                <div class="cell w320">{{ category.name }}</div>
+                <div class="cell w80 center">
+                    <a href="{{ url_for('editCategory', category_id=category.id) }}">
+                        <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
+                    </a>
+            </div>
+                <div class="cell w80 center">
+                    <a href="{{ url_for('deleteCategory', category_id=category.id) }}">
+                        <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+        <a href="{{ url_for('newCategory') }}"><button>Create</button></a>
+        <a href="{{ url_for('home') }}"><button>Back</button></a>
+    </div>
 {% endblock %}

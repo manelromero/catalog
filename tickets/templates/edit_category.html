@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <h1>Categories</h1>
+    <h2>Edit a category</h2>
+
+    {% with category=category %}
+    	{% include "form_edit_category.html" %}
+    	{% block form %}{% endblock %}
+    {% endwith %}
+
+{% endblock %}
