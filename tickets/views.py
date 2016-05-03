@@ -1,7 +1,41 @@
 from . import app, session
-from models import Category, Event
-from forms import CategoryForm
+from models import User, Category, Event
+from forms import CategoryForm, LoginForm
 from flask import render_template, request, redirect, url_for, flash
+
+# **********
+from flask_login import LoginManager
+
+USER = 'admin'
+PASSWORD = '1234'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form)
+    if form.validate():
+        # Login and validate the user.
+        # user should be an instance of your `User` class
+        if form.user.data == USER:
+            print 'jander'
+            flash('Logged in successfully.')
+
+        next = request.args.get('next')
+        # next_is_valid should check if the user has valid
+        # permission to access the `next` url
+        if not next_is_valid(next):
+            return abort(400)
+
+        return redirect(next or url_for('home'))
+    return render_template('login.html', form=form)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+# **********
 
 
 # home

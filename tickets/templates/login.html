@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Login</h1>
+
+<div class="wrapper-categories">
+
+	<form action="{{ url_for('login') }}" method="POST">
+		<ul>
+			<li>{{ form.user.label }} {{ form.user(size=8) }}</li>
+
+			{% if form.user.errors %}
+				{% for error in form.user.errors %}
+					<span class="error">{{ error }}</span>
+				{% endfor %}
+			{% endif %}
+			<li>{{ form.password.label }} {{ form.password(size=8) }}</li>
+
+			{% if form.password.errors %}
+				{% for error in form.password.errors %}
+					<span class="error">{{ error }}</span>
+				{% endfor %}
+			{% endif %}
+
+		</ul>
+		<input type="submit" value="Send">
+	</form>
+
+    <a href="{{ url_for('home') }}"><button>Home</button></a>
+
+</div>
+
+{% endblock %}
