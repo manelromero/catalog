@@ -12,7 +12,7 @@ html {
 
 body {
 	background-color: #f9f9f9;
-	font: 400 1.2rem/1.8rem 'Fira Mono', sans-serif;
+	font: 400 1.2rem/2rem 'Fira Mono', sans-serif;
 }
 
 h1 {
@@ -21,6 +21,7 @@ h1 {
 
 h2 {
 	font: 700 1.6rem/3rem 'Fira Mono', sans-serif;
+	margin-bottom: 2rem;
 }
 
 a {
@@ -48,6 +49,7 @@ td {
 
 label {
 	display: inline-block;
+	min-width: 100px;
 	font: 700 1rem/2rem 'Fira Mono', sans-serif;
 }
 
@@ -58,6 +60,21 @@ input {
 }
 
 input:focus {
+	outline: 0;
+}
+
+select {
+	width: 20.5rem;
+	padding: 0.2rem 0.5rem;
+	font: 400 1.3rem 'Fira Mono', sans-serif;
+	border: 1px solid #999;
+	margin-bottom: 1rem;
+	background: url('../img/down_arrow.png') no-repeat right #ddd;
+	border-radius: 0;
+	-webkit-appearance: none;
+}
+
+select:focus {
 	outline: 0;
 }
 
@@ -93,13 +110,21 @@ input[type=submit]:focus {
 
 .container {
 	width: 90%;
-	max-width: 900px;
+	max-width: 1100px;
 	margin: auto;
 	padding: 1rem 0;
 }
 
 .wrapper-categories {
 	max-width: 500px;
+}
+
+.wrapper-events {
+	max-width: 1100px;
+}
+
+.home-link {
+	margin-top: 1.5rem;
 }
 
 .table-header .header-row {
@@ -119,16 +144,16 @@ input[type=submit]:focus {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
 }
 
-.w320 {
+.wide-cell {
 	width: 320px;
 }
 
-.w80 {
-	width: 80px;
+.narrow-cell {
+	width: 90px;
 }
 
 .cell {
-	padding-left: 0.5rem;
+	padding: 0 0.5rem;
 	justify-content: center;
 	min-width: 50px;
 }
@@ -208,7 +233,7 @@ input[type=submit]:focus {
 
 .underline {
 	color: #ff6200;
-	border-bottom-color: rgba(255, 98, 0, 0.1);
+	border-bottom-color: rgba(255, 98, 0, 0);
 }
 
 .underline:hover,

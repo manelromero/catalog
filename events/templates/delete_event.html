@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Events</h1>
+<h2>Delete an event</h2>
+
+<form action="{{ url_for('deleteEvent', event_id=event.id) }}" method="POST">
+	<ul>
+		<li>Are you sure you want to delete event <span class="orange">{{ event.name }}</span>?</li>
+	</ul>
+	<input type="submit" value="Yes">
+</form>
+
+<a href="{{ url_for('showEvents') }}"><button>No</button></a>
+
+{% endblock %}

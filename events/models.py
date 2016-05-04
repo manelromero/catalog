@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -23,7 +24,8 @@ class Category(Base):
 class Event(Base):
     __tablename__ = 'events'
     id = Column(Integer, primary_key=True)
-    event = Column(String(80))
-    description = Column(String(200))
+    category_id = Column(Integer, ForeignKey('categories.id'))
+    name = Column(String(80))
+    location = Column(String(20))
     date = Column(Date)
-    location = Column(String(80))
+    category = relationship("Category")

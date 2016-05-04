@@ -1,3 +1,3 @@
-from tickets import app
+from events import app
 
 app.run(host='0.0.0.0', port=5000)

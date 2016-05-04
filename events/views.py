@@ -1,7 +1,8 @@
 from . import app, session
 from models import User, Category, Event
-from forms import CategoryForm, LoginForm
+from forms import CategoryForm, EventForm, LoginForm
 from flask import render_template, request, redirect, url_for, flash
+from sqlalchemy import func
 
 # **********
 from flask_login import LoginManager
@@ -76,7 +77,7 @@ def newCategory():
 # show categories
 @app.route('/categories')
 def showCategories():
-    categories = session.query(Category)
+    categories = session.query(Category).order_by(Category.name).all()
     return render_template('show_categories.html', categories=categories)
 
 
@@ -108,25 +109,49 @@ def deleteCategory(category_id):
         return render_template('delete_category.html', cat=cat)
 
 
-# new ticket
-@app.route('/ticket/<int:category_id>new')
-def newTicket(category_id):
-    return render_template('new_ticket.html')
+# new event
+@app.route('/event/new', methods=['GET', 'POST'])
+def newEvent():
+    form = EventForm(request.form)
+    form.category_id.choices = [(c.id, c.name) for c in session.query(Category).order_by(Category.name)]
+    if request.method == 'POST':
+        print form.category_id.data
+        if form.validate():
+            newEvent = Event(category_id=form.category_id.data,
+                name=form.name.data,
+                location=form.location.data,
+                date=form.date.data)
+            session.add(newEvent)
+            session.commit()
+            flash('New event created!')
+            return redirect(url_for('showEvents'))
+        else:
+            return render_template('new_event.html', form=form)
+    else:
+        return render_template('new_event.html', form=form)
 
 
-# show tickets
-@app.route('/tickets')
-def showTickets():
-    return render_template('show_tickets.html', categories=categories)
+# show events
+@app.route('/events')
+def showEvents():
+    events = session.query(Event).order_by(Event.category_id).all()
+    return render_template('show_events.html', events=events)
 
 
-# edit ticket
-@app.route('/tickets/<int:category_id>/edit')
-def editTicket(category_id):
-    return render_template('edit_ticket.html')
+# edit event
+@app.route('/events/<int:event_id>/edit')
+def editEvent(event_id):
+    return render_template('edit_event.html')
 
 
-# delete ticket
-@app.route('/tickets/<int:ticket_id>/delete')
-def deleteTicket():
-    return render_template('delete_ticket.html')
+# delete event
+@app.route('/events/<int:event_id>/delete', methods=['GET', 'POST'])
+def deleteEvent(event_id):
+    event = session.query(Event).filter_by(id=event_id).one()
+    if request.method == 'POST':
+        session.delete(event)
+        session.commit()
+        flash('Event deleted!')
+        return redirect(url_for('showEvents'))
+    else:
+        return render_template('delete_event.html', event=event)
