@@ -25,6 +25,9 @@
 
         <div class="table">
             {% for event in events %}
+            {% if event.category_name %}
+            <div class="row-category">{{ event.category_name }}</div>
+            {% endif %}
             <div class="row">
                 <div class="cell wide-cell">{{ event.name }}</div>
                 <div class="cell wide-cell">{{ event.location }}</div>

@@ -120,7 +120,7 @@ input[type=submit]:focus {
 }
 
 .wrapper-events {
-	max-width: 1100px;
+	max-width: 1200px;
 }
 
 .home-link {
@@ -144,6 +144,10 @@ input[type=submit]:focus {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
 }
 
+.row-category {
+	color: #ff0000;
+	padding-left: 1rem;
+}
 .wide-cell {
 	width: 320px;
 }

@@ -9,7 +9,7 @@ $(document).ready(function() {
 	});
 
 	$('.flash').click(function() {
-		$(this).css('display', 'none');
+		$(this).hide(500);
 	});
 
 });

@@ -134,8 +134,24 @@ def newEvent():
 # show events
 @app.route('/events')
 def showEvents():
+    eventList = []
+    oldEvent = ''
     events = session.query(Event).order_by(Event.category_id).all()
-    return render_template('show_events.html', events=events)
+    for event in events:
+        eventDict = {
+            'id': event.id,
+            'category_name': event.category.name,
+            'name': event.name,
+            'location': event.location,
+            'date': event.date
+        }
+        newEvent = event.category.name
+        if newEvent == oldEvent:
+            eventDict['category_name'] = False
+        else:
+            oldEvent = newEvent
+        eventList.append(eventDict)
+    return render_template('show_events.html', events=eventList)
 
 
 # edit event
