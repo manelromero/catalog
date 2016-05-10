@@ -7,6 +7,7 @@
 <div class="wrapper-categories">
 
 	<form action="{{ url_for('newCategory') }}" method="POST">
+
 		<ul>
 			<li>{{ form.name.label }} {{ form.name(size=25) }}</li>
 
@@ -18,6 +19,7 @@
 
 		</ul>
 		<input type="submit" value="Send">
+
 	</form>
 
     <a href="{{ url_for('showCategories') }}"><button>Back</button></a>

@@ -2,35 +2,35 @@
 {% block content %}
 
 <h1>Events</h1>
-<h2>Create a new event</h2>
+<h2>Edit an event</h2>
 
 <div class="wrapper-categories">
 
-	<form action="{{ url_for('newEvent') }}" method="POST">
+	<form action="{{ url_for('editEvent', event_id=event.id) }}" method="POST">
 
 		<ul>
-			<li>{{ form.category_id.label }} {{ form.category_id(size=1) }}</li>
+			<li>{{ form.category_id.label }} {{ form.category_id(size=1, default=event.category_id) }}</li>
 			{% if form.category_id.errors %}
 				{% for error in form.category_id.errors %}
 					<span class="error">{{ error }}</span>
 				{% endfor %}
 			{% endif %}
 
-			<li>{{ form.name.label }} {{ form.name(size=25) }}</li>
+			<li>{{ form.name.label }} {{ form.name(size=25, placeholder=event.name) }}</li>
 			{% if form.name.errors %}
 				{% for error in form.name.errors %}
 					<span class="error">{{ error }}</span>
 				{% endfor %}
 			{% endif %}
 
-			<li>{{ form.location.label }} {{ form.location(size=25) }}</li>
+			<li>{{ form.location.label }} {{ form.location(size=25, placeholder=event.location) }}</li>
 			{% if form.location.errors %}
 				{% for error in form.location.errors %}
 					<span class="error">{{ error }}</span>
 				{% endfor %}
 			{% endif %}
 
-			<li>{{ form.date.label }} {{ form.date(size=25, placeholder='dd/mm/yyyy') }}</li>
+			<li>{{ form.date.label }} {{ form.date(size=25, placeholder=event.date.strftime('%d/%m/%Y')) }}</li>
 			{% if form.date.errors %}
 				{% for error in form.date.errors %}
 					<span class="error">{{ error }}</span>

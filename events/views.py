@@ -3,6 +3,7 @@ from models import User, Category, Event
 from forms import CategoryForm, EventForm, LoginForm
 from flask import render_template, request, redirect, url_for, flash
 from sqlalchemy import func
+import datetime
 
 # **********
 from flask_login import LoginManager
@@ -88,7 +89,6 @@ def editCategory(category_id):
     form = CategoryForm(request.form)
     if request.method == 'POST' and form.validate():
         cat.name = request.form['name']
-        session.add(cat)
         session.commit()
         flash("Category updated!")
         return redirect(url_for('showCategories'))
@@ -155,9 +155,21 @@ def showEvents():
 
 
 # edit event
-@app.route('/events/<int:event_id>/edit')
+@app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
 def editEvent(event_id):
-    return render_template('edit_event.html')
+    event = session.query(Event).filter_by(id = event_id).one()
+    form = EventForm(request.form)
+    form.category_id.choices = [(c.id, c.name) for c in session.query(Category).order_by(Category.name)]
+    if request.method == 'POST' and form.validate():
+        event.category_id = request.form['category_id']
+        event.name = request.form['name']
+        event.location = request.form['location']
+        event.date = datetime.datetime.strptime(request.form['date'], '%d/%m/%Y').date()
+        session.commit()
+        flash("Event updated!")
+        return redirect(url_for('showEvents'))
+    else:
+        return render_template('edit_event.html', event=event, form=form)
 
 
 # delete event
