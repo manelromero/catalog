@@ -15,22 +15,24 @@
         {% if categories %}
         <div class="table-header">
             <div class="header-row">
-                <div class="cell wide-cell">Name</div>
-                <div class="cell narrow-cell center">Edit</div>
-                <div class="cell narrow-cell center">Delete</div>
+                <div class="cell big-cell">Name</div>
+                <div class="cell small-cell center">Events</div>
+                <div class="cell small-cell center">Edit</div>
+                <div class="cell small-cell center">Delete</div>
             </div>
         </div>
 
         <div class="table">
             {% for category in categories %}
             <div class="row">
-                <div class="cell wide-cell">{{ category.name }}</div>
-                <div class="cell narrow-cell center">
+                <div class="cell big-cell">{{ category.name }}</div>
+                <div class="cell small-cell center">{{ category.count_events }}</div>
+                <div class="cell small-cell center">
                     <a href="{{ url_for('editCategory', category_id=category.id) }}">
                         <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
                     </a>
             </div>
-                <div class="cell narrow-cell center">
+                <div class="cell small-cell center">
                     <a href="{{ url_for('deleteCategory', category_id=category.id) }}">
                         <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
                     </a>

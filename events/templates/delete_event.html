@@ -6,7 +6,8 @@
 
 <form action="{{ url_for('deleteEvent', event_id=event.id) }}" method="POST">
 	<ul>
-		<li>Are you sure you want to delete event <span class="orange">{{ event.name }}</span>?</li>
+		<li>Do you want to delete the next event?</li>
+		<li class="orange">{{ event.name }}</li>
 	</ul>
 	<input type="submit" value="Yes">
 </form>

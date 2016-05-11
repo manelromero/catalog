@@ -75,8 +75,10 @@ def newCategory():
 # show categories
 @app.route('/categories')
 def showCategories():
-    categories = Category.query.order_by(Category.name)
-    return render_template('show_categories.html', categories=categories)
+    categories = Category.query.order_by(Category.name).all()
+    for category in categories:
+        category.count_events = len(category.events)
+    return render_template('show_categories.html', categories = categories)
 
 
 # edit category
@@ -131,21 +133,21 @@ def newEvent():
 def showEvents():
     eventList = []
     oldEvent = ''
-    events = Event.query.order_by(Event.category_id)
-    for event in events:
-        eventDict = {
-            'id': event.id,
-            'category_name': event.category.name,
-            'name': event.name,
-            'location': event.location,
-            'date': event.date
-        }
-        newEvent = event.category.name
-        if newEvent == oldEvent:
-            eventDict['category_name'] = False
-        else:
-            oldEvent = newEvent
-        eventList.append(eventDict)
+    categories = Category.query.order_by(Category.name).all()
+    for category in categories:
+        for event in category.events:
+            eventDict = {
+                'id': event.id,
+                'name': event.name,
+                'location': event.location,
+                'date': event.date,
+                'category_name': event.category.name
+            }
+            if oldEvent == event.category.name:
+                eventDict['category_name'] = False
+            else:
+                oldEvent = event.category.name
+            eventList.append(eventDict)
     return render_template('show_events.html', events=eventList)
 
 

@@ -12,15 +12,15 @@ html {
 
 body {
 	background-color: #f9f9f9;
-	font: 400 1.2rem/2rem 'Fira Mono', sans-serif;
+	font: 400 1.2rem/2rem 'Open Sans', sans-serif;
 }
 
 h1 {
-	font: 700 2rem/4rem 'Fira Mono', sans-serif;
+	font: 600 2rem/4rem 'Open Sans', sans-serif;
 }
 
 h2 {
-	font: 700 1.6rem/3rem 'Fira Mono', sans-serif;
+	font: 600 1.6rem/3rem 'Open Sans', sans-serif;
 	margin-bottom: 2rem;
 }
 
@@ -36,11 +36,11 @@ li {
 label {
 	display: inline-block;
 	min-width: 100px;
-	font: 700 1rem/2rem 'Fira Mono', sans-serif;
+	font: 600 1rem/2rem 'Open Sans', sans-serif;
 }
 
 input {
-	font: 400 1.2rem 'Fira Mono', sans-serif;
+	font: 400 1.2rem 'Open Sans', sans-serif;
 	padding: 0.2rem 0.5rem;
 	margin-bottom: 1rem;
 }
@@ -52,7 +52,7 @@ input:focus {
 select {
 	width: 20.5rem;
 	padding: 0.2rem 0.5rem;
-	font: 400 1.3rem 'Fira Mono', sans-serif;
+	font: 400 1.3rem 'Open Sans', sans-serif;
 	border: 1px solid #999;
 	margin-bottom: 1rem;
 	background: url('../img/down_arrow.png') no-repeat right #ddd;
@@ -68,10 +68,11 @@ button,
 input[type=submit] {
 	min-width: 100px;
 	float: left;
+	margin-top: 1rem;
 	margin-right: 1rem;
     background-color: #fff;
     color: #000;
-	font: 400 1.2rem 'Fira Mono', sans-serif;
+	font: 400 1.2rem 'Open Sans', sans-serif;
     border: 2px solid #000;
     padding: 0.4rem 1rem;
     transition: background-color 0.2s, color 0.2s;
@@ -81,7 +82,7 @@ button:hover,
 input[type=submit]:hover {
     background-color: #000;
     color: #fff;
-	font: 400 1.2rem 'Fira Mono', sans-serif;
+	font: 400 1.2rem 'Open Sans', sans-serif;
     padding: 0.4rem 1rem;
 }
 
@@ -140,12 +141,17 @@ input[type=submit]:focus {
 	color: #ff6200;
 	padding-left: 1rem;
 }
-.wide-cell {
-	width: 320px;
+
+.big-cell {
+	width: 400px;
 }
 
-.narrow-cell {
-	width: 90px;
+.medium-cell {
+	width: 200px;
+}
+
+.small-cell {
+	width: 80px;
 }
 
 .cell {
@@ -168,6 +174,7 @@ input[type=submit]:focus {
 
 .orange {
 	color: #ff6200;
+	font: 600 1.6rem/3rem 'Open Sans', sans-serif;
 }
 
 .error {
@@ -189,7 +196,7 @@ input[type=submit]:focus {
 }
 
 .flash {
-	font: 400 1.2rem/2rem 'Fira Mono', sans-serif;
+	font: 400 1.2rem/2rem 'Open Sans', sans-serif;
 	color: #00aeb2;
 	background-color: rgba(0, 174, 178, 0.1);
 	border: 2px solid rgba(0, 174, 178, 1);

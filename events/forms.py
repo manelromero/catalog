@@ -15,9 +15,14 @@ class LoginForm(Form):
 
 class CategoryForm(Form):
     name = StringField('Category', [
-        validators.InputRequired(message='You have to introduce a name'),
-        validators.Length(max=25, message='The name cannot be longer than 25 \
-            characters')])
+        validators.InputRequired(
+            message = 'You have to introduce a name for the Category'
+        ),
+        validators.Length(
+            max = 25,
+            message = 'The name cannot be longer than 25 characters'
+        )
+    ])
 
 
 class EventForm(Form):
@@ -33,5 +38,5 @@ class EventForm(Form):
         validators.Length(max=25, message='The name cannot be longer than 25 \
             characters')])
     date = DateField('Date', [
-        validators.InputRequired(message='You have to introduce a name')],
+        validators.InputRequired(message='You have to introduce a date')],
         format='%d/%m/%Y')

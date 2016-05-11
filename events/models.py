@@ -21,14 +21,14 @@ class Category(db.Model):
     events = db.relationship(
         'Event',
         backref = 'category',
-        lazy = 'dynamic'
+        lazy = 'select'
     )
 
 
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
+    name = db.Column(db.String(25))
     location = db.Column(db.String(20))
     date = db.Column(db.Date)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))

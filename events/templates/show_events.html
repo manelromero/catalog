@@ -15,11 +15,11 @@
         {% if events %}
         <div class="table-header">
             <div class="header-row">
-                <div class="cell wide-cell">Event</div>
-                <div class="cell wide-cell">Location</div>
-                <div class="cell wide-cell">Date</div>
-                <div class="cell narrow-cell center">Edit</div>
-                <div class="cell narrow-cell center">Delete</div>
+                <div class="cell big-cell">Event</div>
+                <div class="cell medium-cell">Location</div>
+                <div class="cell medium-cell">Date</div>
+                <div class="cell small-cell center">Edit</div>
+                <div class="cell small-cell center">Delete</div>
             </div>
         </div>
 
@@ -29,15 +29,15 @@
             <div class="row-category">{{ event.category_name }}</div>
             {% endif %}
             <div class="row">
-                <div class="cell wide-cell">{{ event.name }}</div>
-                <div class="cell wide-cell">{{ event.location }}</div>
-                <div class="cell wide-cell">{{ event.date.strftime('%d/%m/%Y') }}</div>
-                <div class="cell narrow-cell center">
+                <div class="cell big-cell">{{ event.name }}</div>
+                <div class="cell medium-cell">{{ event.location }}</div>
+                <div class="cell medium-cell">{{ event.date.strftime('%d/%m/%Y') }}</div>
+                <div class="cell small-cell center">
                     <a href="{{ url_for('editEvent', event_id=event.id) }}">
                         <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
                     </a>
                 </div>
-                <div class="cell narrow-cell center">
+                <div class="cell small-cell center">
                     <a href="{{ url_for('deleteEvent', event_id=event.id) }}">
                         <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
                     </a>
