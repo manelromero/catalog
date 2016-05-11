@@ -1,31 +1,34 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from . import app
+from flask_sqlalchemy import SQLAlchemy
 
-Base = declarative_base()
+db = SQLAlchemy(app)
 
 
-class User(Base):
+class User(db.Model):
     __tablename__ = 'users'
-    user = Column(String(8), primary_key=True)
-    password = Column(String(8))
+    user = db.Column(db.String(8), primary_key=True)
+    password = db.Column(db.String(8))
 
     @property
     def login_user(self):
         print self
 
 
-class Category(Base):
+class Category(db.Model):
     __tablename__ = 'categories'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(25))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(25))
+    events = db.relationship(
+        'Event',
+        backref = 'category',
+        lazy = 'dynamic'
+    )
 
 
-class Event(Base):
+class Event(db.Model):
     __tablename__ = 'events'
-    id = Column(Integer, primary_key=True)
-    category_id = Column(Integer, ForeignKey('categories.id'))
-    name = Column(String(80))
-    location = Column(String(20))
-    date = Column(Date)
-    category = relationship("Category")
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    location = db.Column(db.String(20))
+    date = db.Column(db.Date)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))

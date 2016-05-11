@@ -33,20 +33,6 @@ li {
 	margin-bottom: 1rem;
 }
 
-table {
-	border-collapse: collapse;
-}
-
-tr {
-	border: 2px solid #000;
-    border-spacing: 0 1rem;
-}
-
-th,
-td {
-	padding: 1rem;
-}
-
 label {
 	display: inline-block;
 	min-width: 100px;
@@ -127,9 +113,16 @@ input[type=submit]:focus {
 	margin-top: 1.5rem;
 }
 
+.table {
+	margin: 1rem auto;
+	border-collapse: collapse;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 .table-header .header-row {
 	background-color: #333;
 	color: #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .row,
@@ -138,14 +131,13 @@ input[type=submit]:focus {
 	display: flex;
 	align-items: center;
 	background-color: #fff;
-	margin-bottom: 1rem;
 	padding: 0.5rem;
-	/*border-radius: 0.3rem;*/
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
+	border-top: 1px solid #eee;
 }
 
 .row-category {
-	color: #ff0000;
+	background-color: rgba(255, 98, 0, 0.2);
+	color: #ff6200;
 	padding-left: 1rem;
 }
 .wide-cell {
@@ -198,13 +190,11 @@ input[type=submit]:focus {
 
 .flash {
 	font: 400 1.2rem/2rem 'Fira Mono', sans-serif;
-	color: #14cc69;
-	background-color: rgba(20, 204, 105, 0.1);
-	border: 2px solid rgba(20, 204, 105, 1);
+	color: #00aeb2;
+	background-color: rgba(0, 174, 178, 0.1);
+	border: 2px solid rgba(0, 174, 178, 1);
 	margin: 1rem auto;
 	padding: 1rem;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	border-radius: 0.5rem;
 }
 
 .flash::after {

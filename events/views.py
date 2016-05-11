@@ -1,8 +1,7 @@
-from . import app, session
-from models import User, Category, Event
+from . import app
+from models import db, User, Category, Event
 from forms import CategoryForm, EventForm, LoginForm
 from flask import render_template, request, redirect, url_for, flash
-from sqlalchemy import func
 import datetime
 
 # **********
@@ -13,6 +12,7 @@ PASSWORD = '1234'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -62,34 +62,31 @@ def json():
 @app.route('/categories/new', methods=['GET', 'POST'])
 def newCategory():
     form = CategoryForm(request.form)
-    if request.method == 'POST':
-        if form.validate():
-            newCategory = Category(name=form.name.data)
-            session.add(newCategory)
-            session.commit()
-            flash("New category created!")
-            return redirect(url_for('showCategories'))
-        else:
-            return render_template('new_category.html', form=form)
+    if request.method == 'POST' and form.validate():
+        newCategory = Category(name=form.name.data)
+        db.session.add(newCategory)
+        db.session.commit()
+        flash("New category created!")
+        return redirect(url_for('showCategories'))
     else:
-        return render_template('new_category.html', form=form, new=True)
+        return render_template('new_category.html', form=form)
 
 
 # show categories
 @app.route('/categories')
 def showCategories():
-    categories = session.query(Category).order_by(Category.name).all()
+    categories = Category.query.order_by(Category.name)
     return render_template('show_categories.html', categories=categories)
 
 
 # edit category
 @app.route('/categories/<int:category_id>/edit', methods=['GET', 'POST'])
 def editCategory(category_id):
-    cat = session.query(Category).filter_by(id = category_id).one()
+    cat = Category.query.filter_by(id=category_id).first()
     form = CategoryForm(request.form)
     if request.method == 'POST' and form.validate():
         cat.name = request.form['name']
-        session.commit()
+        db.session.commit()
         flash("Category updated!")
         return redirect(url_for('showCategories'))
     else:
@@ -99,10 +96,10 @@ def editCategory(category_id):
 # delete category
 @app.route('/categories/<int:category_id>/delete', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    cat = session.query(Category).filter_by(id = category_id).one()
+    cat = Category.query.filter_by(id=category_id).first()
     if request.method == 'POST':
-        session.delete(cat)
-        session.commit()
+        db.session.delete(cat)
+        db.session.commit()
         flash("Category deleted!")
         return redirect(url_for('showCategories'))
     else:
@@ -113,20 +110,18 @@ def deleteCategory(category_id):
 @app.route('/event/new', methods=['GET', 'POST'])
 def newEvent():
     form = EventForm(request.form)
-    form.category_id.choices = [(c.id, c.name) for c in session.query(Category).order_by(Category.name)]
-    if request.method == 'POST':
-        print form.category_id.data
-        if form.validate():
-            newEvent = Event(category_id=form.category_id.data,
-                name=form.name.data,
-                location=form.location.data,
-                date=form.date.data)
-            session.add(newEvent)
-            session.commit()
-            flash('New event created!')
-            return redirect(url_for('showEvents'))
-        else:
-            return render_template('new_event.html', form=form)
+    form.category_id.choices = [(c.id, c.name) for c in Category.query.order_by(Category.name)]
+    if request.method == 'POST' and form.validate():
+        newEvent = Event(
+            category_id = form.category_id.data,
+            name = form.name.data,
+            location = form.location.data,
+            date = form.date.data
+        )
+        db.session.add(newEvent)
+        db.session.commit()
+        flash('New event created!')
+        return redirect(url_for('showEvents'))
     else:
         return render_template('new_event.html', form=form)
 
@@ -136,7 +131,7 @@ def newEvent():
 def showEvents():
     eventList = []
     oldEvent = ''
-    events = session.query(Event).order_by(Event.category_id).all()
+    events = Event.query.order_by(Event.category_id)
     for event in events:
         eventDict = {
             'id': event.id,
@@ -157,15 +152,15 @@ def showEvents():
 # edit event
 @app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
 def editEvent(event_id):
-    event = session.query(Event).filter_by(id = event_id).one()
+    event = Event.query.filter_by(id=event_id).one()
     form = EventForm(request.form)
-    form.category_id.choices = [(c.id, c.name) for c in session.query(Category).order_by(Category.name)]
+    form.category_id.choices = [(c.id, c.name) for c in Category.query.order_by(Category.name)]
     if request.method == 'POST' and form.validate():
         event.category_id = request.form['category_id']
         event.name = request.form['name']
         event.location = request.form['location']
         event.date = datetime.datetime.strptime(request.form['date'], '%d/%m/%Y').date()
-        session.commit()
+        db.session.commit()
         flash("Event updated!")
         return redirect(url_for('showEvents'))
     else:
@@ -175,10 +170,10 @@ def editEvent(event_id):
 # delete event
 @app.route('/events/<int:event_id>/delete', methods=['GET', 'POST'])
 def deleteEvent(event_id):
-    event = session.query(Event).filter_by(id=event_id).one()
+    event = Event.query.filter_by(id=event_id).first()
     if request.method == 'POST':
-        session.delete(event)
-        session.commit()
+        db.session.delete(event)
+        db.session.commit()
         flash('Event deleted!')
         return redirect(url_for('showEvents'))
     else:
