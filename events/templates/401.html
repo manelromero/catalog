@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Ups...</h1>
+<h2>Unauthorized</h2>
+
+<div>To see that page you must be logged in.</div>
+<div>Click <a href="{{ url_for('login') }}">here</a> to log in.</div>
+{% endblock %}

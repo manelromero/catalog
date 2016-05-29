@@ -1,0 +1,38 @@
+{% block bar %}
+
+<!-- get flash messages -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="flash">
+    <div class="flash-message">{{ message }}</div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="left-bar-content">
+    <h3>Usuari</h3>
+    <div>
+        <a href="#">session.clear()</a>
+    </div>
+
+    <h3>Actions</h3>
+    <div>
+        <a href="#">Permetre accés</a>
+    </div>
+    <div>
+        <a href="#">Bloquejar host</a>
+    </div>
+
+    <h3>Tables</h3>
+    <div>
+        <a href="#">Categories</a>
+    </div>
+    <div>
+        <a href="#">Events</a>
+    </div>
+
+</div>
+
+{% endblock %}

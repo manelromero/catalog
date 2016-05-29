@@ -1,28 +1,52 @@
 from . import app
-from models import db, User, Category, Event
+from models import *
 from forms import CategoryForm, EventForm, LoginForm
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session
 import datetime
+from flask_login import LoginManager, login_user, login_required
 
-# **********
-from flask_login import LoginManager
 
-USER = 'admin'
-PASSWORD = '1234'
+# db.create_all()
 
+# inititate the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 
+# login manager
+@login_manager.user_loader
+def load_user(user_id):
+    if 'username' in session:
+        user = User(
+            id=user_id,
+            username=session['username']
+            )
+        return user
+    return None
+
+
+# log in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    if form.validate():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
-        if form.user.data == USER:
-            print 'jander'
-            flash('Logged in successfully.')
+    if request.method == 'POST' and form.validate():
+        loginUser = {
+            'username': form.username.data,
+            'password': form.password.data
+            }
+        users = User.query
+        # check database is not empty
+        if users:
+            # check user
+            for user in users:
+                if user.username == loginUser['username']:
+                    if user.password == loginUser['password']:
+                        session['username'] = loginUser['username']
+                        session['user_id'] = user.id
+                        flash('User logged in')
+                        return redirect(url_for('home'))
+                flash('User does not exist')
+                return redirect(url_for('login'))
 
         next = request.args.get('next')
         # next_is_valid should check if the user has valid
@@ -31,25 +55,73 @@ def login():
             return abort(400)
 
         return redirect(next or url_for('home'))
-    return render_template('login.html', form=form)
+    return render_template(
+        'login.html',
+        form=form,
+        action='login',
+        action_name='Log In'
+        )
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
-# **********
+# log out
+@app.route('/logout')
+def logout():
+    if session['username']:
+        session.clear()
+        flash('User logged out')
+        return redirect(url_for('home'))
+
+
+# sign In
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        newUser = User(
+            username=form.username.data,
+            password=form.password.data
+            )
+        users = User.query.all()
+        # check database is not empty
+        if users:
+            # check user doesn't exist
+            for user in users:
+                if newUser.username == user.username:
+                    flash('User already exists, please try another user.')
+                    return redirect(url_for('signin'))
+        db.session.add(newUser)
+        db.session.commit()
+        flash("User registered!")
+        session['username'] = form.username.data
+        return redirect(url_for('home'))
+    else:
+        return render_template(
+            'login.html',
+            form=form,
+            action='signin',
+            action_name='Sign In'
+            )
+
+
+# 401 unauthorized
+@app.errorhandler(401)
+def custom_401(error):
+    if 'username' in session:
+        session.clear()
+        return render_template('session-expired.html')
+    return render_template('401.html')
+
+
+# 404 not found
+@app.errorhandler(404)
+def pageNotFound(error):
+    return render_template('404.html')
 
 
 # home
 @app.route('/')
 def home():
     return render_template('home.html')
-
-
-# 404
-@app.errorhandler(404)
-def pageNotFound(e):
-    return render_template('404.html')
 
 
 # JSON
@@ -60,6 +132,7 @@ def json():
 
 # new category
 @app.route('/categories/new', methods=['GET', 'POST'])
+@login_required
 def newCategory():
     form = CategoryForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -78,11 +151,12 @@ def showCategories():
     categories = Category.query.order_by(Category.name).all()
     for category in categories:
         category.count_events = len(category.events)
-    return render_template('show_categories.html', categories = categories)
+    return render_template('show_categories.html', categories=categories)
 
 
 # edit category
 @app.route('/categories/<int:category_id>/edit', methods=['GET', 'POST'])
+@login_required
 def editCategory(category_id):
     cat = Category.query.filter_by(id=category_id).first()
     form = CategoryForm(request.form)
@@ -97,6 +171,7 @@ def editCategory(category_id):
 
 # delete category
 @app.route('/categories/<int:category_id>/delete', methods=['GET', 'POST'])
+@login_required
 def deleteCategory(category_id):
     cat = Category.query.filter_by(id=category_id).first()
     if request.method == 'POST':
@@ -110,15 +185,18 @@ def deleteCategory(category_id):
 
 # new event
 @app.route('/event/new', methods=['GET', 'POST'])
+@login_required
 def newEvent():
     form = EventForm(request.form)
-    form.category_id.choices = [(c.id, c.name) for c in Category.query.order_by(Category.name)]
+    form.category_id.choices = [
+        (c.id, c.name) for c in Category.query.order_by(Category.name)
+        ]
     if request.method == 'POST' and form.validate():
         newEvent = Event(
-            category_id = form.category_id.data,
-            name = form.name.data,
-            location = form.location.data,
-            date = form.date.data
+            category_id=form.category_id.data,
+            name=form.name.data,
+            location=form.location.data,
+            date=form.date.data
         )
         db.session.add(newEvent)
         db.session.commit()
@@ -153,10 +231,13 @@ def showEvents():
 
 # edit event
 @app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
+@login_required
 def editEvent(event_id):
     event = Event.query.filter_by(id=event_id).one()
     form = EventForm(request.form)
-    form.category_id.choices = [(c.id, c.name) for c in Category.query.order_by(Category.name)]
+    form.category_id.choices = [
+        (c.id, c.name) for c in Category.query.order_by(Category.name)
+        ]
     if request.method == 'POST' and form.validate():
         event.category_id = request.form['category_id']
         event.name = request.form['name']
@@ -171,6 +252,7 @@ def editEvent(event_id):
 
 # delete event
 @app.route('/events/<int:event_id>/delete', methods=['GET', 'POST'])
+@login_required
 def deleteEvent(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if request.method == 'POST':
