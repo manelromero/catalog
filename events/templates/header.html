@@ -1,23 +1,38 @@
-{% block header %}
+{%- block header -%}
 
-	<nav>
-		<div class="nav-home">
-			<a href="{{ url_for('home') }}" class="negative">Home</a>
-		</div>
-		<div class="nav-data">
-			<span>{{ session.sid }}</span>
-		</div>
-		<div class="nav-login">
-			{% if session.username %}
-			<div>
-				<span class="user">{{ session.username }}</span>
-				<a href="{{ url_for('logout') }}" class="negative">Logout</a>
-			</div>
-			{% else %}
-			<a href="{{ url_for('signin') }}" class="negative">Sign In</a> |
-			<a href="{{ url_for('login') }}" class="negative">Log In</a>
-			{% endif %}
-		</div>
-	</nav>
+<nav>
 
-{% endblock %}
+	<div class="nav-home">
+		<a href="{{ url_for('home') }}" class="negative">Home</a>
+	</div>
+
+	<div class="nav-data">
+
+		<!-- get flash messages -->
+		{%- with messages = get_flashed_messages() -%}
+		{%- if messages -%}
+		{%- for message in messages -%}
+		<div class="flash">
+			<div class="flash-message">{{ message }}</div>
+		</div>
+		{%- endfor -%}
+		{%- endif -%}
+		{%- endwith -%}
+
+	</div>
+
+	<div class="nav-login">
+		{%- if session.username -%}
+		<div>
+			<span class="user">{{ session.username }}</span>
+			<a href="{{ url_for('logout') }}" class="negative">Logout</a>
+		</div>
+		{%- else -%}
+		<a href="{{ url_for('signin') }}" class="negative">Sign In</a> |
+		<a href="{{ url_for('login') }}" class="negative">Log In</a>
+		{%- endif -%}
+	</div>
+
+</nav>
+
+{%- endblock -%}

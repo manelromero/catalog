@@ -5,10 +5,9 @@
 <h2>Delete Category</h2>
 
 <form action="{{ url_for('deleteCategory', category_id=cat.id) }}" method="POST">
-	<ul>
-		<li>Do you want to delete the next category?</li>
-		<li class="orange">{{ cat.name }}</li>
-	</ul>
+	<div>
+		Do you want to delete the <span class="red">{{ cat.name }}</span> category?
+	</div>
 	<input type="submit" value="Yes">
 </form>
 

@@ -16,21 +16,21 @@
 				{% endfor %}
 			{% endif %}
 
-			<li>{{ form.name.label }} {{ form.name(size=25) }}</li>
+			<li>{{ form.name.label }} {{ form.name(size=32) }}</li>
 			{% if form.name.errors %}
 				{% for error in form.name.errors %}
 					<span class="error">{{ error }}</span>
 				{% endfor %}
 			{% endif %}
 
-			<li>{{ form.location.label }} {{ form.location(size=25) }}</li>
+			<li>{{ form.location.label }} {{ form.location(size=27) }}</li>
 			{% if form.location.errors %}
 				{% for error in form.location.errors %}
 					<span class="error">{{ error }}</span>
 				{% endfor %}
 			{% endif %}
 
-			<li>{{ form.date.label }} {{ form.date(size=25, placeholder='dd/mm/yyyy') }}</li>
+			<li>{{ form.date.label }} {{ form.date(size=10, placeholder='dd/mm/yyyy') }}</li>
 			{% if form.date.errors %}
 				{% for error in form.date.errors %}
 					<span class="error">{{ error }}</span>

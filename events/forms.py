@@ -42,8 +42,8 @@ class EventForm(Form):
     name = StringField('Event', [
         validators.InputRequired(message='You have to introduce a name'),
         validators.Length(
-            max=25,
-            message='The name cannot be longer than 25 characters'
+            max=30,
+            message='The name cannot be longer than 30 characters'
             )
         ])
     location = StringField('Location', [
@@ -54,5 +54,7 @@ class EventForm(Form):
             )
         ])
     date = DateField('Date', [
-        validators.InputRequired(message='You have to introduce a date')],
-        format='%d/%m/%Y')
+        validators.InputRequired(
+            message='You have to introduce a date')],
+            format='%d/%m/%Y'
+            )

@@ -188,9 +188,10 @@ def deleteCategory(category_id):
 @login_required
 def newEvent():
     form = EventForm(request.form)
-    form.category_id.choices = [
+    form.category_id.choices = ([
         (c.id, c.name) for c in Category.query.order_by(Category.name)
-        ]
+        ])
+    form.category_id.choices.insert(0, (0, 'select'))
     if request.method == 'POST' and form.validate():
         newEvent = Event(
             category_id=form.category_id.data,
@@ -200,7 +201,7 @@ def newEvent():
         )
         db.session.add(newEvent)
         db.session.commit()
-        flash('New event created!')
+        flash('New event created')
         return redirect(url_for('showEvents'))
     else:
         return render_template('new_event.html', form=form)
