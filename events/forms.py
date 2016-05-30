@@ -1,5 +1,5 @@
 from wtforms import Form, StringField, DateField, PasswordField, SelectField,\
-    validators
+    validators, ValidationError
 
 
 class LoginForm(Form):
@@ -7,15 +7,15 @@ class LoginForm(Form):
         validators.InputRequired(message='You have to introduce an user'),
         validators.Length(
             max=8,
-            message='The user cannot be longer than 8 characters'
+            message='User cannot be longer than 8 characters'
             )
         ])
     password = PasswordField('Password', [
         validators.InputRequired(message='You have to introduce a password'),
         validators.Length(
             min=4,
-            max=8,
-            message='The password must have between 4 and 8 characters'
+            max=10,
+            message='Password must have between 4 and 10 characters'
             )
         ])
 
@@ -23,11 +23,11 @@ class LoginForm(Form):
 class CategoryForm(Form):
     name = StringField('Category', [
         validators.InputRequired(
-            message = 'You have to introduce a name for the Category'
+            message='You have to introduce a name for the Category'
         ),
         validators.Length(
-            max = 25,
-            message = 'The name cannot be longer than 25 characters'
+            max=25,
+            message='The name cannot be longer than 25 characters'
             )
         ])
 
@@ -58,3 +58,7 @@ class EventForm(Form):
             message='You have to introduce a date')],
             format='%d/%m/%Y'
             )
+
+    def validate_category_id(form, field):
+        if field.data == 0:
+            raise ValidationError('You have to select a category')

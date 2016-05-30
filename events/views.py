@@ -1,12 +1,13 @@
 from . import app
 from models import *
 from forms import CategoryForm, EventForm, LoginForm
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session,\
+    jsonify
 import datetime
 from flask_login import LoginManager, login_user, login_required
 
 
-# db.create_all()
+db.create_all()
 
 # inititate the login manager
 login_manager = LoginManager()
@@ -34,7 +35,7 @@ def login():
             'username': form.username.data,
             'password': form.password.data
             }
-        users = User.query
+        users = User.query.all()
         # check database is not empty
         if users:
             # check user
@@ -45,16 +46,9 @@ def login():
                         session['user_id'] = user.id
                         flash('User logged in')
                         return redirect(url_for('home'))
-                flash('User does not exist')
-                return redirect(url_for('login'))
-
-        next = request.args.get('next')
-        # next_is_valid should check if the user has valid
-        # permission to access the `next` url
-        if not next_is_valid(next):
-            return abort(400)
-
-        return redirect(next or url_for('home'))
+            flash('User does not exist')
+            return redirect(url_for('login'))
+        return redirect(url_for('home'))
     return render_template(
         'login.html',
         form=form,
@@ -87,11 +81,11 @@ def signin():
             # check user doesn't exist
             for user in users:
                 if newUser.username == user.username:
-                    flash('User already exists, please try another user.')
+                    flash('User already exists, please try another user')
                     return redirect(url_for('signin'))
         db.session.add(newUser)
         db.session.commit()
-        flash("User registered!")
+        flash("User registered")
         session['username'] = form.username.data
         return redirect(url_for('home'))
     else:
@@ -121,13 +115,21 @@ def pageNotFound(error):
 # home
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return redirect(url_for('showEvents'))
 
 
-# JSON
-@app.route('/JSON')
-def json():
-    return render_template('home.html')
+# JSON categories
+@app.route('/categories/json')
+def jsonCategories():
+    categories = Category.query.order_by(Category.name).all()
+    return jsonify(Categories=[cat.serialize for cat in categories])
+
+
+# JSON events
+@app.route('/events/json')
+def jsonEvents():
+    events = Event.query.order_by(Event.name).all()
+    return jsonify(Events=[ev.serialize for ev in events])
 
 
 # new category
@@ -136,10 +138,13 @@ def json():
 def newCategory():
     form = CategoryForm(request.form)
     if request.method == 'POST' and form.validate():
-        newCategory = Category(name=form.name.data)
+        newCategory = Category(
+            name=form.name.data,
+            user_id=session['user_id']
+            )
         db.session.add(newCategory)
         db.session.commit()
-        flash("New category created!")
+        flash("New category created")
         return redirect(url_for('showCategories'))
     else:
         return render_template('new_category.html', form=form)
@@ -163,7 +168,7 @@ def editCategory(category_id):
     if request.method == 'POST' and form.validate():
         cat.name = request.form['name']
         db.session.commit()
-        flash("Category updated!")
+        flash("Category updated")
         return redirect(url_for('showCategories'))
     else:
         return render_template('edit_category.html', cat=cat, form=form)
@@ -177,7 +182,7 @@ def deleteCategory(category_id):
     if request.method == 'POST':
         db.session.delete(cat)
         db.session.commit()
-        flash("Category deleted!")
+        flash("Category deleted")
         return redirect(url_for('showCategories'))
     else:
         return render_template('delete_category.html', cat=cat)
@@ -197,7 +202,8 @@ def newEvent():
             category_id=form.category_id.data,
             name=form.name.data,
             location=form.location.data,
-            date=form.date.data
+            date=form.date.data,
+            user_id=session['user_id']
         )
         db.session.add(newEvent)
         db.session.commit()
@@ -220,7 +226,8 @@ def showEvents():
                 'name': event.name,
                 'location': event.location,
                 'date': event.date,
-                'category_name': event.category.name
+                'category_name': event.category.name,
+                'user_id': event.user_id
             }
             if oldEvent == event.category.name:
                 eventDict['category_name'] = False
@@ -236,16 +243,18 @@ def showEvents():
 def editEvent(event_id):
     event = Event.query.filter_by(id=event_id).one()
     form = EventForm(request.form)
-    form.category_id.choices = [
+    form.category_id.choices = ([
         (c.id, c.name) for c in Category.query.order_by(Category.name)
-        ]
+        ])
+    form.category_id.choices.insert(0, (0, 'select'))
     if request.method == 'POST' and form.validate():
         event.category_id = request.form['category_id']
         event.name = request.form['name']
         event.location = request.form['location']
-        event.date = datetime.datetime.strptime(request.form['date'], '%d/%m/%Y').date()
+        event.date = datetime.datetime.strptime(
+            request.form['date'], '%d/%m/%Y').date()
         db.session.commit()
-        flash("Event updated!")
+        flash("Event updated")
         return redirect(url_for('showEvents'))
     else:
         return render_template('edit_event.html', event=event, form=form)
@@ -259,7 +268,7 @@ def deleteEvent(event_id):
     if request.method == 'POST':
         db.session.delete(event)
         db.session.commit()
-        flash('Event deleted!')
+        flash('Event deleted')
         return redirect(url_for('showEvents'))
     else:
         return render_template('delete_event.html', event=event)

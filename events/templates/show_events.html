@@ -1,9 +1,9 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
     <h1>Events</h1>
 
     <div class="wrapper-events">
-        {% if events %}
+        {%- if events -%}
         <div class="table-header">
             <div class="header-row">
                 <div class="cell big-cell">Event</div>
@@ -15,30 +15,35 @@
         </div>
 
         <div class="table">
-            {% for event in events %}
-            {% if event.category_name %}
+            {%- for event in events -%}
+            {%- if event.category_name -%}
             <div class="row-category">{{ event.category_name }}</div>
-            {% endif %}
+            {%- endif -%}
             <div class="row">
                 <div class="cell big-cell">{{ event.name }}</div>
                 <div class="cell medium-cell">{{ event.location }}</div>
                 <div class="cell medium-cell">{{ event.date.strftime('%d/%m/%Y') }}</div>
                 <div class="cell small-cell center">
+                    {%- if event.user_id == session.user_id -%}
                     <a href="{{ url_for('editEvent', event_id=event.id) }}">
                         <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
                     </a>
+                    {%- endif -%}
                 </div>
                 <div class="cell small-cell center">
+                    {%- if event.user_id == session.user_id -%}
                     <a href="{{ url_for('deleteEvent', event_id=event.id) }}">
                         <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
                     </a>
+                    {%- endif -%}
                 </div>
             </div>
-            {% endfor %}
+            {%- endfor -%}
         </div>
-        {% endif %}
+        {%- endif -%}
 
+        {%- if session.username -%}
         <a href="{{ url_for('newEvent') }}"><button>Create</button></a>
-        <a href="{{ url_for('home') }}"><button>Back</button></a>
+        {%- endif -%}
     </div>
-{% endblock %}
+{%- endblock -%}

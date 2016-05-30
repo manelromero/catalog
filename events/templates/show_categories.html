@@ -1,11 +1,12 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
     <h1>Categories</h1>
 
     <div class="wrapper-categories">
-        {% if categories %}
+        {%- if categories -%}
         <div class="table-header">
             <div class="header-row">
+                <div class="cell tiny-cell"></div>
                 <div class="cell big-cell">Name</div>
                 <div class="cell small-cell center">Events</div>
                 <div class="cell small-cell center">Edit</div>
@@ -14,26 +15,32 @@
         </div>
 
         <div class="table">
-            {% for category in categories %}
+            {%- for category in categories -%}
             <div class="row">
+                <div class="cell tiny-cell unfold more"></div>
                 <div class="cell big-cell">{{ category.name }}</div>
                 <div class="cell small-cell center">{{ category.count_events }}</div>
                 <div class="cell small-cell center">
+                    {%- if category.user_id == session.user_id -%}
                     <a href="{{ url_for('editCategory', category_id=category.id) }}">
                         <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
                     </a>
-            </div>
+                    {%- endif -%}
+                </div>
                 <div class="cell small-cell center">
+                    {%- if category.user_id == session.user_id -%}
                     <a href="{{ url_for('deleteCategory', category_id=category.id) }}">
                         <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
                     </a>
+                    {%- endif -%}
                 </div>
             </div>
-            {% endfor %}
+            {%- endfor -%}
         </div>
-        {% endif %}
-
+        {%- endif -%}
+        
+        {%- if session.username -%}
         <a href="{{ url_for('newCategory') }}"><button>Create</button></a>
-        <a href="{{ url_for('home') }}"><button>Back</button></a>
+        {%- endif -%}
     </div>
-{% endblock %}
+{%- endblock -%}

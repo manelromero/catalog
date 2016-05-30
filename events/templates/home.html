@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
     <h1>Home</h1>
     <div>
     	<a href="{{ url_for('showCategories') }}" class="underline">Show Categories</a>
@@ -8,4 +8,4 @@
     	<a href="{{ url_for('showEvents') }}" class="underline">Show Events</a>
     </div>
 
-{% endblock %}
+{%- endblock -%}

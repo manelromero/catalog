@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
 
 <h1>Categories</h1>
 <h2>Create new Category</h2>
@@ -9,14 +9,13 @@
 	<form action="{{ url_for('newCategory') }}" method="POST">
 
 		<ul>
-			<li>{{ form.name.label }} {{ form.name(size=25) }}</li>
-
-			{% if form.name.errors %}
-				{% for error in form.name.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
+			<li>{{ form.name.label }} {{ form.name(size=25) }}
+				{%- if form.name.errors -%}
+				{%- for error in form.name.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
 		</ul>
 		<input type="submit" value="Send">
 
@@ -26,4 +25,4 @@
 
 </div>
 
-{% endblock %}
+{%- endblock -%}

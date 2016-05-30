@@ -1,17 +1,16 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
 
 <h1>Events</h1>
 <h2>Delete Event</h2>
 
 <form action="{{ url_for('deleteEvent', event_id=event.id) }}" method="POST">
-	<ul>
-		<li>Do you want to delete the next event?</li>
-		<li class="orange">{{ event.name }}</li>
-	</ul>
+	<div>Do you want to delete the <span class="red">{{ event.name }}</span> event?</div>
+	{%- if event.user_id == session.user_id -%}
 	<input type="submit" value="Yes">
+	{%- endif -%}
 </form>
 
 <a href="{{ url_for('showEvents') }}"><button>No</button></a>
 
-{% endblock %}
+{%- endblock -%}

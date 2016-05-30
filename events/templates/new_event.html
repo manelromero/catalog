@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
 
 <h1>Events</h1>
 <h2>Create new Event</h2>
@@ -9,34 +9,34 @@
 	<form action="{{ url_for('newEvent') }}" method="POST">
 
 		<ul>
-			<li>{{ form.category_id.label }} {{ form.category_id(size=1) }}</li>
-			{% if form.category_id.errors %}
-				{% for error in form.category_id.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
-			<li>{{ form.name.label }} {{ form.name(size=32) }}</li>
-			{% if form.name.errors %}
-				{% for error in form.name.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
-			<li>{{ form.location.label }} {{ form.location(size=27) }}</li>
-			{% if form.location.errors %}
-				{% for error in form.location.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
-			<li>{{ form.date.label }} {{ form.date(size=10, placeholder='dd/mm/yyyy') }}</li>
-			{% if form.date.errors %}
-				{% for error in form.date.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
+			<li>{{ form.category_id.label }} {{ form.category_id(size=1) }}
+				{%- if form.category_id.errors -%}
+				{%- for error in form.category_id.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
+			<li>{{ form.name.label }} {{ form.name(size=32) }}
+				{%- if form.name.errors -%}
+				{%- for error in form.name.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
+			<li>{{ form.location.label }} {{ form.location(size=27) }}
+				{%- if form.location.errors -%}
+				{%- for error in form.location.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
+			<li>{{ form.date.label }} {{ form.date(size=10, placeholder='dd/mm/yyyy') }}
+				{%- if form.date.errors -%}
+				{%- for error in form.date.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
 		</ul>
 		<input type="submit" value="Send">
 
@@ -46,4 +46,4 @@
 
 </div>
 
-{% endblock %}
+{%- endblock -%}

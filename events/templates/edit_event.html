@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{%- extends "layout.html" -%}
+{%- block content -%}
 
 <h1>Events</h1>
 <h2>Edit Event</h2>
@@ -9,41 +9,42 @@
 	<form action="{{ url_for('editEvent', event_id=event.id) }}" method="POST">
 
 		<ul>
-			<li>{{ form.category_id.label }} {{ form.category_id(size=1, default=event.category_id) }}</li>
-			{% if form.category_id.errors %}
-				{% for error in form.category_id.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
-			<li>{{ form.name.label }} {{ form.name(size=25, placeholder=event.name) }}</li>
-			{% if form.name.errors %}
-				{% for error in form.name.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
-			<li>{{ form.location.label }} {{ form.location(size=25, placeholder=event.location) }}</li>
-			{% if form.location.errors %}
-				{% for error in form.location.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
-			<li>{{ form.date.label }} {{ form.date(size=25, placeholder=event.date.strftime('%d/%m/%Y')) }}</li>
-			{% if form.date.errors %}
-				{% for error in form.date.errors %}
-					<span class="error">{{ error }}</span>
-				{% endfor %}
-			{% endif %}
-
+			<li>{{ form.category_id.label }} {{ form.category_id(size=1, default=event.category_id) }}
+				{%- if form.category_id.errors -%}
+				{%- for error in form.category_id.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
+			<li>{{ form.name.label }} {{ form.name(size=32, placeholder=event.name) }}
+				{%- if form.name.errors -%}
+				{%- for error in form.name.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
+			<li>{{ form.location.label }} {{ form.location(size=27, placeholder=event.location) }}
+				{%- if form.location.errors -%}
+				{%- for error in form.location.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
+			<li>{{ form.date.label }} {{ form.date(size=10, placeholder=event.date.strftime('%d/%m/%Y')) }}
+				{%- if form.date.errors -%}
+				{%- for error in form.date.errors -%}
+				<span class="error">{{ error }}</span>
+				{%- endfor -%}
+				{%- endif -%}
+			</li>
 		</ul>
+		{%- if event.user_id == session.user_id -%}
 		<input type="submit" value="Send">
-
+		{%- endif -%}
 	</form>
 
     <a href="{{ url_for('showEvents') }}"><button>Back</button></a>
 
 </div>
 
-{% endblock %}
+{%- endblock -%}

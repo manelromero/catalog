@@ -3,7 +3,7 @@
 <nav>
 
 	<div class="nav-home">
-		<a href="{{ url_for('home') }}" class="negative">Home</a>
+		<a href="{{ url_for('home') }}" class="underline negative">Home</a>
 	</div>
 
 	<div class="nav-data">
@@ -25,11 +25,11 @@
 		{%- if session.username -%}
 		<div>
 			<span class="user">{{ session.username }}</span>
-			<a href="{{ url_for('logout') }}" class="negative">Logout</a>
+			<a href="{{ url_for('logout') }}" class="underline negative">Logout</a>
 		</div>
 		{%- else -%}
-		<a href="{{ url_for('signin') }}" class="negative">Sign In</a> |
-		<a href="{{ url_for('login') }}" class="negative">Log In</a>
+		<a href="{{ url_for('signin') }}" class="underline negative">Sign In</a> -
+		<a href="{{ url_for('login') }}" class="underline negative">Log In</a>
 		{%- endif -%}
 	</div>
 
