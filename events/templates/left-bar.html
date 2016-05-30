@@ -16,6 +16,18 @@
     <div>
         <a href="{{ url_for('newCategory') }}" class="underline">Add Category</a>
     </div>
+
+    <!-- get flash messages -->
+    {%- with messages = get_flashed_messages() -%}
+    {%- if messages -%}
+    {%- for message in messages -%}
+    <div class="flash">
+        <div class="flash-message">{{ message }}</div>
+    </div>
+    {%- endfor -%}
+    {%- endif -%}
+    {%- endwith -%}
+
 </div>
 
 {%- endblock -%}

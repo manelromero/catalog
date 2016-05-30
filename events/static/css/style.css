@@ -260,17 +260,19 @@ input[type=submit]:focus {
 }
 
 .flash {
-	width: 100%;
-	position: relative;
-	top: 0;
-	left: 0;
-	text-align: center;
-	background-color: #bf0000;
-	z-index: 5;
+    width: 200px;
+    min-height: 50px;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    margin-top: 1rem;
+    background-color: #bf0000;
+    z-index: 5;
 }
 
 .flash-message {
-	font: 600 1.2rem/50px 'Open Sans', sans-serif;
+	margin: 2rem auto;
+	font: 600 1.2rem 'Open Sans', sans-serif;
 	color: #fff;
 }
 

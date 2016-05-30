@@ -85,9 +85,13 @@ def signin():
                     return redirect(url_for('signin'))
         db.session.add(newUser)
         db.session.commit()
-        flash("User registered")
-        session['username'] = form.username.data
-        return redirect(url_for('home'))
+        users = User.query.all()
+        for user in users:
+            if user.username == newUser.username:
+                session['username'] = user.username
+                session['user_id'] = user.id
+                flash("User registered")
+                return redirect(url_for('home'))
     else:
         return render_template(
             'login.html',
@@ -180,9 +184,14 @@ def editCategory(category_id):
 def deleteCategory(category_id):
     cat = Category.query.filter_by(id=category_id).first()
     if request.method == 'POST':
-        db.session.delete(cat)
-        db.session.commit()
-        flash("Category deleted")
+        category = Category.query.filter_by(id=category_id).first()
+        print '\nEVENTS:', category.events
+        if category.events == []:
+            db.session.delete(cat)
+            db.session.commit()            
+            flash("Category deleted")
+            return redirect(url_for('showCategories'))
+        flash("Category has to be empty to delete it")
         return redirect(url_for('showCategories'))
     else:
         return render_template('delete_category.html', cat=cat)
