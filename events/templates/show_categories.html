@@ -17,7 +17,7 @@
         <div class="table">
             {%- for category in categories -%}
             <div class="row">
-                <div class="cell tiny-cell unfold more"></div>
+                <div class="cell tiny-cell unfold more" data-id="{{ category.id }}"></div>
                 <div class="cell big-cell">{{ category.name }}</div>
                 <div class="cell small-cell center">{{ category.count_events }}</div>
                 <div class="cell small-cell center">
@@ -35,6 +35,7 @@
                     {%- endif -%}
                 </div>
             </div>
+            <div class="members" data-category={{ category.id }}></div>
             {%- endfor -%}
         </div>
         {%- endif -%}

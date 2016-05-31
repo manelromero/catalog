@@ -1,0 +1,32 @@
+<div class="member-header">
+    <div class="cell big-cell">Event</div>
+    <div class="cell big-cell">Location</div>
+    <div class="cell medium-cell">Date</div>
+    <div class="cell small-cell center">Edit</div>
+    <div class="cell small-cell center">Delete</div>
+</div>
+{%- if events.count() > 0 -%}
+{%- for event in events -%}
+<div class="member">
+    <div class="cell big-cell">{{ event.name }}</div>
+    <div class="cell big-cell">{{ event.location }}</div>
+    <div class="cell medium-cell">{{ event.date.strftime('%d/%m/%Y') }}</div>
+    <div class="cell small-cell center">
+        {%- if event.user_id == session.user_id -%}
+        <a href="{{ url_for('editEvent', event_id=event.id) }}">
+            <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
+        </a>
+        {%- endif -%}
+    </div>
+    <div class="cell small-cell center">
+        {%- if event.user_id == session.user_id -%}
+        <a href="{{ url_for('deleteEvent', event_id=event.id) }}">
+            <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
+        </a>
+        {%- endif -%}
+    </div>
+</div>
+{%- endfor -%}
+{%- else -%}
+<div class="empty-events">No events in this category</div>
+{%- endif -%}

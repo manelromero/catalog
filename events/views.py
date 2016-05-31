@@ -3,8 +3,8 @@ from models import *
 from forms import CategoryForm, EventForm, LoginForm
 from flask import render_template, request, redirect, url_for, flash, session,\
     jsonify
-import datetime
 from flask_login import LoginManager, login_user, login_required
+import datetime
 
 
 db.create_all()
@@ -48,6 +48,7 @@ def login():
                         return redirect(url_for('home'))
             flash('User does not exist')
             return redirect(url_for('login'))
+        flash('User does not exist')
         return redirect(url_for('home'))
     return render_template(
         'login.html',
@@ -163,6 +164,13 @@ def showCategories():
     return render_template('show_categories.html', categories=categories)
 
 
+# show category members
+@app.route('/show-category-members/<int:category_id>')
+def showCategoryMembers(category_id):
+    events = Event.query.filter_by(category_id=category_id).order_by(Event.date)
+    return render_template('show_category_members.html', events=events)
+
+
 # edit category
 @app.route('/categories/<int:category_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -225,25 +233,8 @@ def newEvent():
 # show events
 @app.route('/events')
 def showEvents():
-    eventList = []
-    oldEvent = ''
-    categories = Category.query.order_by(Category.name).all()
-    for category in categories:
-        for event in category.events:
-            eventDict = {
-                'id': event.id,
-                'name': event.name,
-                'location': event.location,
-                'date': event.date,
-                'category_name': event.category.name,
-                'user_id': event.user_id
-            }
-            if oldEvent == event.category.name:
-                eventDict['category_name'] = False
-            else:
-                oldEvent = event.category.name
-            eventList.append(eventDict)
-    return render_template('show_events.html', events=eventList)
+    events = Event.query.join(Category).order_by(Category.name, Event.date).all()
+    return render_template('show_events.html', events=events)
 
 
 # edit event

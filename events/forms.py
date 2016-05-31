@@ -26,8 +26,8 @@ class CategoryForm(Form):
             message='You have to introduce a name for the Category'
         ),
         validators.Length(
-            max=25,
-            message='The name cannot be longer than 25 characters'
+            max=15,
+            message='The name cannot be longer than 15 characters'
             )
         ])
 
