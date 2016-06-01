@@ -6,8 +6,8 @@ class LoginForm(Form):
     username = StringField('User', [
         validators.InputRequired(message='You have to introduce an user'),
         validators.Length(
-            max=8,
-            message='User cannot be longer than 8 characters'
+            max=15,
+            message='User cannot be longer than 15 characters'
             )
         ])
     password = PasswordField('Password', [

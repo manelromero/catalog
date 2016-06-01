@@ -76,6 +76,11 @@ nav {
 	border-left: 1px solid #e9e9e9;
 }
 
+.wrapper-form {
+	clear: both;
+	margin-bottom: 7rem;
+}
+
 h1 {
 	font: 600 2rem 'Open Sans', sans-serif;
     margin: 1rem auto;

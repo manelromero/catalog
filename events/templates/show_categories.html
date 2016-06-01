@@ -21,14 +21,14 @@
                 <div class="cell big-cell">{{ category.name }}</div>
                 <div class="cell small-cell center">{{ category.count_events }}</div>
                 <div class="cell small-cell center">
-                    {%- if category.user_id == session.user_id -%}
+                    {%- if category.username == session.username -%}
                     <a href="{{ url_for('editCategory', category_id=category.id) }}">
                         <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
                     </a>
                     {%- endif -%}
                 </div>
                 <div class="cell small-cell center">
-                    {%- if category.user_id == session.user_id -%}
+                    {%- if category.username == session.username -%}
                     <a href="{{ url_for('deleteCategory', category_id=category.id) }}">
                         <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
                     </a>
@@ -39,7 +39,7 @@
             {%- endfor -%}
         </div>
         {%- endif -%}
-        
+
         {%- if session.username -%}
         <a href="{{ url_for('newCategory') }}"><button>Create</button></a>
         {%- endif -%}

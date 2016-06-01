@@ -6,7 +6,7 @@
 
 <form action="{{ url_for('deleteCategory', category_id=cat.id) }}" method="POST">
 	<div>Do you want to delete the <span class="red">{{ cat.name }}</span> category?</div>
-	{%- if cat.user_id == session.user_id -%}
+	{%- if cat.username == session.username -%}
 	<input type="submit" value="Yes">
 	{%- endif -%}
 </form>

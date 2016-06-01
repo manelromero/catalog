@@ -38,7 +38,7 @@
 				{%- endif -%}
 			</li>
 		</ul>
-		{%- if event.user_id == session.user_id -%}
+		{%- if event.username == session.username -%}
 		<input type="submit" value="Send">
 		{%- endif -%}
 	</form>

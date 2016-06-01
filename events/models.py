@@ -1,5 +1,6 @@
-from . import app
 from flask_sqlalchemy import SQLAlchemy
+
+from . import app
 
 
 db = SQLAlchemy(app)
@@ -8,7 +9,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(8))
+    username = db.Column(db.String(15))
     password = db.Column(db.String(10))
 
     def is_authenticated(self):
@@ -30,7 +31,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(15))
     events = db.relationship('Event', backref='category', lazy='select')
-    user_id = db.Column(db.Integer)
+    username = db.Column(db.String(15))
 
     @property
     def serialize(self):
@@ -50,7 +51,7 @@ class Event(db.Model):
     location = db.Column(db.String(25))
     date = db.Column(db.Date)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    user_id = db.Column(db.Integer)
+    username = db.Column(db.String(15))
 
     @property
     def serialize(self):

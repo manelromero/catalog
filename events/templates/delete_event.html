@@ -6,7 +6,7 @@
 
 <form action="{{ url_for('deleteEvent', event_id=event.id) }}" method="POST">
 	<div>Do you want to delete the <span class="red">{{ event.name }}</span> event?</div>
-	{%- if event.user_id == session.user_id -%}
+	{%- if event.username == session.username -%}
 	<input type="submit" value="Yes">
 	{%- endif -%}
 </form>

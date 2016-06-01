@@ -23,14 +23,14 @@
                 <div class="cell big-cell">{{ event.location }}</div>
                 <div class="cell medium-cell">{{ event.date.strftime('%d/%m/%Y') }}</div>
                 <div class="cell small-cell center">
-                    {%- if event.user_id == session.user_id -%}
+                    {%- if event.username == session.username -%}
                     <a href="{{ url_for('editEvent', event_id=event.id) }}">
                         <img src="{{ url_for('static', filename='img/edit.svg') }}" class="icon" alt="Edit">
                     </a>
                     {%- endif -%}
                 </div>
                 <div class="cell small-cell center">
-                    {%- if event.user_id == session.user_id -%}
+                    {%- if event.username == session.username -%}
                     <a href="{{ url_for('deleteEvent', event_id=event.id) }}">
                         <img src="{{ url_for('static', filename='img/delete.svg') }}" class="icon" alt="Delete">
                     </a>
