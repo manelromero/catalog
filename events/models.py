@@ -39,7 +39,7 @@ class Category(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'user_id': self.user_id
+            'username': self.username
             }
 
 
@@ -62,5 +62,5 @@ class Event(db.Model):
             'location': self.location,
             'date': self.date.strftime("%d/%m/%Y"),
             'category_id': self.category_id,
-            'user_id': self.user_id
+            'username': self.username
             }
