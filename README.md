@@ -24,4 +24,4 @@ This is a catalog application web example for my [Udacity](http://www.udacity.co
 ### Application
 * This application will give you the structure to interact with an events database.
 * If you want to start with an empty database, you can delete the `events.db` file and the app will create a new one.
-* If you use the provided database, there are two users you need `admin` and `manel`, both with the impossible to decrypt password `1234`
+* If you use the provided database, there is one user you need to edit or delete stuff, `admin`, with the impossible to decrypt password `1234`
