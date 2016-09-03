@@ -7,17 +7,13 @@ class LoginForm(Form):
         validators.InputRequired(message='You have to introduce an user'),
         validators.Length(
             max=15,
-            message='User cannot be longer than 15 characters'
-            )
-        ])
+            message='User cannot be longer than 15 characters')])
     password = PasswordField('Password', [
         validators.InputRequired(message='You have to introduce a password'),
         validators.Length(
             min=4,
             max=10,
-            message='Password must have between 4 and 10 characters'
-            )
-        ])
+            message='Password must have between 4 and 10 characters')])
 
 
 class CategoryForm(Form):
@@ -27,37 +23,26 @@ class CategoryForm(Form):
         ),
         validators.Length(
             max=15,
-            message='The name cannot be longer than 15 characters'
-            )
-        ])
+            message='The name cannot be longer than 15 characters')])
 
 
 class EventForm(Form):
     category_id = SelectField('Category', [
         validators.InputRequired(
-            message='You have to select a Category'
-            )],
-            coerce=int
-            )
+            message='You have to select a Category')], coerce=int)
     name = StringField('Event', [
         validators.InputRequired(message='You have to introduce a name'),
         validators.Length(
             max=30,
-            message='The name cannot be longer than 30 characters'
-            )
-        ])
+            message='The name cannot be longer than 30 characters')])
     location = StringField('Location', [
         validators.InputRequired(message='You have to introduce a name'),
         validators.Length(
             max=25,
-            message='The name cannot be longer than 25 characters'
-            )
-        ])
+            message='The name cannot be longer than 25 characters')])
     date = DateField('Date', [
         validators.InputRequired(
-            message='You have to introduce a date')],
-            format='%d/%m/%Y'
-            )
+            message='You have to introduce a date')], format='%d/%m/%Y')
 
     def validate_category_id(form, field):
         if field.data == 0:

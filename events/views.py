@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, session,\
     jsonify
-from flask_login import LoginManager, login_user, login_required
+from flask_login import LoginManager, login_required
 import datetime
 from flask import session as login_session
 import random
@@ -79,8 +79,7 @@ def gconnect():
     if stored_credentials is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps(
             'Current user is already connected.'),
-            200
-            )
+            200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -122,8 +121,7 @@ def load_user(user_id):
     if 'username' in session:
         user = User(
             id=user_id,
-            username=session['username']
-            )
+            username=session['username'])
         return user
     return None
 
@@ -138,15 +136,13 @@ def login():
     '''
     # Create anti-forgery state token
     state = ''.join(random.choice(
-        string.ascii_uppercase + string.digits) for x in xrange(32)
-        )
+        string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
         loginUser = {
             'username': form.username.data,
-            'password': form.password.data
-            }
+            'password': form.password.data}
         users = User.query.all()
         # check database is not empty
         if users:
@@ -189,15 +185,13 @@ def signin():
     '''
     # Create anti-forgery state token
     state = ''.join(random.choice(
-        string.ascii_uppercase + string.digits) for x in xrange(32)
-        )
+        string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
         newUser = User(
             username=form.username.data,
-            password=form.password.data
-            )
+            password=form.password.data)
         users = User.query.all()
         # check database is not empty
         if users:
@@ -286,8 +280,7 @@ def newCategory():
     if request.method == 'POST' and form.validate():
         newCategory = Category(
             name=form.name.data,
-            username=session['username']
-            )
+            username=session['username'])
         db.session.add(newCategory)
         db.session.commit()
         flash("New category created")
@@ -322,8 +315,7 @@ def showCategoryMembers(category_id):
     Returns a render of the show category members html page.
     '''
     events = Event.query.filter_by(category_id=category_id).order_by(
-        Event.date
-        )
+        Event.date)
     return render_template('show_category_members.html', events=events)
 
 
@@ -387,8 +379,7 @@ def newEvent():
     '''
     form = EventForm(request.form)
     form.category_id.choices = ([
-        (c.id, c.name) for c in Category.query.order_by(Category.name)
-        ])
+        (c.id, c.name) for c in Category.query.order_by(Category.name)])
     form.category_id.choices.insert(0, (0, 'select'))
     if request.method == 'POST' and form.validate():
         newEvent = Event(
@@ -416,8 +407,7 @@ def showEvents():
     Returns a render of the show events html page.
     '''
     events = Event.query.join(Category).order_by(
-        Category.name, Event.date
-        ).all()
+        Category.name, Event.date).all()
     return render_template('show_events.html', events=events)
 
 
@@ -435,8 +425,7 @@ def editEvent(event_id):
     event = Event.query.filter_by(id=event_id).one()
     form = EventForm(request.form)
     form.category_id.choices = ([
-        (c.id, c.name) for c in Category.query.order_by(Category.name)
-        ])
+        (c.id, c.name) for c in Category.query.order_by(Category.name)])
     form.category_id.choices.insert(0, (0, 'select'))
     if request.method == 'POST' and form.validate():
         event.category_id = request.form['category_id']
