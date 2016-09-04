@@ -21,7 +21,7 @@ db.create_all()
 
 # import data from the Google JSON file
 CLIENT_ID = json.loads(open(
-    'client_secrets.json', 'r').read())['web']['client_id']
+    '/var/wwww/catalog/client_secrets.json', 'r').read())['web']['client_id']
 
 
 @app.route('/gconnect', methods=['POST'])
